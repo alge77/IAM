@@ -15,7 +15,7 @@ define(["mwf","entities"], function(mwf, entities) {
         this.oncreate = function (callback) {
             // TODO: do databinding, set listeners, initialise the view
             var helloEl = document.createElement("h1");
-            helloEl.textContent = "Hello Mobile World...";
+            helloEl.textContent = "Blubb bla bla...";
             this.root.appendChild(helloEl);
 
             // call the superclass once creation is done

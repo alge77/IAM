@@ -15,7 +15,7 @@ define(["mwf","mwfUtils","EntityManager","entities","GenericCRUDImplLocal","Gene
 
                 // initialise the local database
                 // TODO-REPEATED: add new entity types to the array of object store names
-                GenericCRUDImplLocal.initialiseDB("mwftutdb", 1, ["MyEntity"], function () {
+                GenericCRUDImplLocal.initialiseDB("mwftutdb", 1, ["MyEntity","MediaItem"], function () {
 
                     //// TODO-REPEATED: if entity manager is used, register entities and crud operations for the entity types
                     //this.registerEntity("MyEntity", entities.MyEntity, true);

@@ -17,9 +17,9 @@ var server;
 var port = 8393;
 
 // the ip address
-var ip = /*"127.0.0.1";*/utils.getIPAddress();
+/*var ip = "127.0.0.1";utils.getIPAddress();*/
 
-// this might no be the most elegant solution to avoid the event emitter error message..., see http://stackoverflow.com/questions/9768444/possible-eventemitter-memory-leak-detected 
+// this might no be the most elegant solution to avoid the event emitter error message..., see http://stackoverflow.com/questions/9768444/possible-eventemitter-memory-leak-detected
 
 server = http.createServer(function(req, res) {
     var path = url.parse(req.url).pathname;
@@ -74,16 +74,16 @@ server = http.createServer(function(req, res) {
             console.log("onHttpRequest(): response is null. No need to finish...");
         }
     });
-    
+
     // don't limit the amount of event listeners
     process.setMaxListeners(0);
-    
+
 });
 
 
 // let the server listen on the given port
-server.listen(port, ip);
-console.log("HTTP server running at http://" + ip + ":" + port);
+server.listen(port, "localhost");
+console.log("HTTP server running at localhost:" + port);
 
 /*
  * helper methhod for assiging a Content-Type header to http responses
@@ -115,4 +115,3 @@ function contentType(path) {
         return "text/html";
     }
 }
-

@@ -27,7 +27,26 @@
 <body data-mwf-application="MyApplication">
 
 <!-- TODO-REPEATED: add new views here -->
-<div class="mwf-view mwf-view-initial" data-mwf-viewcontroller="MyInitialViewController">
+<div class="mwf-view mwf-view-initial" id="mediaOverview" data-mwf-viewcontroller="ListviewViewController">
+  <header>
+    <div class="mwf-imgbutton mwf-img-sandwich mwf-left-align" id="resetDatabase"></div>
+    <h2 class="mwf-left-align">Medien</h2>
+    <div class="mwf-imgbutton mwf-img-plus mwf-right-align" id="addNewMediaItem"></div>
+  </header>
+  <div class="mwf-body mwf-scrollview">
+  <ul class="mwf-listview" data-mwf-listitem-view="myapp-listitem">
+    <li class="mwf-listitem mwf-li-title-subtitle mwf-template" data-mwf-templatename="myapp-listitem">
+      <img class="mwf-left-align" src="https://placeholdit.imgix.net/~text?txtsize=100&txt=ITEM&w=200&h=200"/>
+      <div class="mwf-li-titleblock">
+        <h2>lorem ipsum</h2>
+        <h3>dolor sit amet</h3>
+      </div>
+      <div class="mwf-imgbutton mwf-img-options-vertical mwf-right-align">
+      </div>
+    </li>
+  </ul>
+  </div>
+<footer></footer>
 </div>
 
 </body>
