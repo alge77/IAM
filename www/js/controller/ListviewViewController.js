@@ -1,7 +1,7 @@
 /**
  * @author Jörn Kreutel
  */
-define(["mwf","entities","GenericCRUDImplLocal"], function(mwf, entities, GenericCRUDImplLocal) {
+define(["mwf", "entities"], function(mwf, entities) {
 
     function ListviewViewController() {
         console.log("ListviewViewController()");
@@ -14,8 +14,6 @@ define(["mwf","entities","GenericCRUDImplLocal"], function(mwf, entities, Generi
         var addNewMediaItemElement;
 
         var resetDatabaseElement;
-
-        var crudops = GenericCRUDImplLocal.newInstance("MediaItem");
         /*
          * for any view: initialise the view
          */
@@ -24,14 +22,13 @@ define(["mwf","entities","GenericCRUDImplLocal"], function(mwf, entities, Generi
 
             addNewMediaItemElement = this.root.querySelector("#addNewMediaItem");
             addNewMediaItemElement.onclick = function() {
-              crudops.create(new entities.MediaItem("m new" ,"https://placeholdit.imgix.net/~text?txtsize=100&txt=NEW&w=200&h=200"),function(created)
-            {
-            this.addToListview(created);
-            }.bind(this));
-            crudops.readAll (function (items) {
+
+            this.createNewItem();
+            }.bind(this);
+
+            entities.MediaItem.readAll(function(items) {
               this.initialiseListview(items);
             }.bind(this));
-            }.bind(this);
 
             resetDatabaseElement = this.root.querySelector("#resetDatabase");
             resetDatabaseElement.onclick = function() {
@@ -40,16 +37,67 @@ define(["mwf","entities","GenericCRUDImplLocal"], function(mwf, entities, Generi
               }
             }.bind(this);
 
-
             // call the superclass once creation is done
             proto.oncreate.call(this,callback);
+        }
+
+        this.createNewItem = function() {
+          var newItem = new entities.MediaItem("M", "https://placeholdit.imgix.net/~text?txtsize=100&txt=NEW&w=200&h=200");
+          this.showDialog("mediaItemDialog", {
+            item: newItem,
+            actionBindings: {
+            submitForm: function(event) {
+              event.original.preventDefault();
+              newItem.create(function() {
+                this.addToListview(newItem);
+              }.bind(this));
+              this.hideDialog();
+            }.bind(this)
+        }
+        });
+        }
+
+      this.deleteItem = function(item) {
+        /*
+        crudops.delete(item._id,function(){
+          this.removeFromListview(item. id);
+        }.bind(this));
+        */
+        item.delete(function(){
+          this.removeFromListview(item._id);
+          }.bind(this));
+        }
+
+        this.editItem = function(item) {
+          /*
+          item.name = (item.name + item.name);
+          crudops.update(item._id,item,function(){
+            this.updateInListview(item. id,item);
+          }.bind(this));
+          */
+          this.showDialog("mediaItemDialog", {
+            item: item,
+            actionBindings: {
+              submitForm: function(event) {
+                event.original.preventDefault();
+                item.update(function(){
+                  this.updateInListview(item._id, item);
+                }.bind(this));
+                this.hideDialog();
+              }.bind(this), /*!!!*/
+              deleteItem: function(event) {
+              this.deleteItem(item);
+              this.hideDialog();
+            }.bind(this)
+            }
+          });
         }
 
         /*
          * for views with listviews: bind a list item to an item view
          * TODO: delete if no listview is used or if databinding uses ractive templates
          */
-        this.bindListItemView = function (viewid, itemview, item) {
+      /*  this.bindListItemView = function (viewid, itemview, item) {
             // TODO: implement how attributes of item shall be displayed in itemview
             itemview.root.getElementsByTagName("img")[0].src = item.src;
             itemview.root.getElementsByTagName("h2")[0].textContent =
@@ -57,6 +105,7 @@ define(["mwf","entities","GenericCRUDImplLocal"], function(mwf, entities, Generi
             itemview.root.getElementsByTagName("h3")[0].textContent =
             item.added;
         }
+        */
 
         /*
          * for views with listviews: react to the selection of a listitem

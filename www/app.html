@@ -28,20 +28,42 @@
 
 <!-- TODO-REPEATED: add new views here -->
 <div class="mwf-view mwf-view-initial" id="mediaOverview" data-mwf-viewcontroller="ListviewViewController">
+  <div data-mwf-templatename="mediaItemMenu" class="mwf-listitem-menu mwf-template mwf-databind mwf-dialog mwf-popup">
+    <header>
+      <h2 class="mwf-dyncontent">{{name}}{{_id}}</h2>
+    </header>
+    <div class=“mwf-dialog-body“>
+      <ul>
+        <li class="mwf-li-singletitle mwf-menu-item" data-mwf-targetaction="deleteItem">Löschen</li>
+        <li class="mwf-li-singletitle mwf-menu-item" data-mwf-targetaction="editItem">Editieren</li>
+      </ul>
+    </div>
+  </div>
+  <div class="mwf-dialog mwf-popup mwf-template mwf-databind mwf-view-component" data-mwf-viewcontroller="GenericDialogTemplateViewController" data-mwf-templatename="mediaItemDialog">
+    <div class=“mwf-dialog-body“>
+      <h2>Neues Medium</h2>
+      <form id="tagNameInputForm" on-submit="submitForm">
+        <input name="name" autocomplete="off" class="mwf-autofocus" type="text" placeholder="Name" required="required" value="{{item.name}}"/>
+        <div class=“mwf-buttonbar“> <button class="mwf-left-align mwf-button" type="button" onclick="deleteItem">Löschen</button>
+          <input class="mwf-button-prio mwf-right-align mwf-button" type="submit" value="Hinzufügen"/>
+</div>
+      </form>
+</div>
+</div>
   <header>
     <div class="mwf-imgbutton mwf-img-sandwich mwf-left-align" id="resetDatabase"></div>
     <h2 class="mwf-left-align">Medien</h2>
     <div class="mwf-imgbutton mwf-img-plus mwf-right-align" id="addNewMediaItem"></div>
   </header>
   <div class="mwf-body mwf-scrollview">
-  <ul class="mwf-listview" data-mwf-listitem-view="myapp-listitem">
-    <li class="mwf-listitem mwf-li-title-subtitle mwf-template" data-mwf-templatename="myapp-listitem">
-      <img class="mwf-left-align" src="https://placeholdit.imgix.net/~text?txtsize=100&txt=ITEM&w=200&h=200"/>
+  <ul class="mwf-listview" data-mwf-listitem-view="myapp-listitem" data-mwf-listitem-menu="mediaItemMenu">
+    <li class="mwf-listitem mwf-li-title-subtitle mwf-template mwf-databind" data-mwf-templatename="myapp-listitem">
+      <img class="mwf-left-align" src="{{src}}"/>
       <div class="mwf-li-titleblock">
-        <h2>lorem ipsum</h2>
-        <h3>dolor sit amet</h3>
+        <h2>{{name}}{{_id}}</h2>
+        <h3>{{addedDateString}}</h3>
       </div>
-      <div class="mwf-imgbutton mwf-img-options-vertical mwf-right-align">
+      <div class="mwf-imgbutton mwf-img-options-vertical mwf-right-align mwf-listitem-menu-control">
       </div>
     </li>
   </ul>

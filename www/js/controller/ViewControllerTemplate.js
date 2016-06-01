@@ -34,6 +34,7 @@ define(["mwf","entities"], function(mwf, entities) {
          */
         this.onListItemSelected = function(listitem,listview) {
             // TODO: implement how selection of listitem shall be handled
+            proto.onListItemMenuItemSelected.call(this, option, listitem, listview);
         }
 
         /*
