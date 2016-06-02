@@ -41,20 +41,31 @@ define(["mwf", "entities"], function(mwf, entities) {
             proto.oncreate.call(this,callback);
         }
 
+        /*
         this.createNewItem = function() {
-          var newItem = new entities.MediaItem("M", "https://placeholdit.imgix.net/~text?txtsize=100&txt=NEW&w=200&h=200");
-          this.showDialog("mediaItemDialog", {
+        var newItem = new entities.MediaItem(“m“,“http://lorempixel.com/50/50“);
+        newItem.create(function(){
+        this.addToListview(newItem);
+        }.bind(this));
+      }
+        */
+
+        /* HIER STECKT DER FEHLER!!!!! DER OBERE CODE FÜGT EIN ELEMENT HINZU, MIT DIALOG NICHT MEHR MÖGLICH
+        AUSSERDEM WIRD EINE URL NACH DEM MUSTER http://localhost:3000/?name=*der name den ich in das Dialogfeld eingegeben habe* AUFGERUFEN */
+        this.createNewItem = function() {
+          var newItem = new entities.MediaItem("", "https://placeholdit.imgix.net/~text?txtsize=100&txt=NEW&w=200&h=200");
+          this.showDialog("mediaItemDialog",{
             item: newItem,
             actionBindings: {
             submitForm: function(event) {
               event.original.preventDefault();
-              newItem.create(function() {
+              newItem.create(function(){
                 this.addToListview(newItem);
-              }.bind(this));
-              this.hideDialog();
-            }.bind(this)
-        }
-        });
+                }.bind(this));
+                this.hideDialog();
+              }.bind(this)
+            }
+          });
         }
 
       this.deleteItem = function(item) {
@@ -97,7 +108,7 @@ define(["mwf", "entities"], function(mwf, entities) {
          * for views with listviews: bind a list item to an item view
          * TODO: delete if no listview is used or if databinding uses ractive templates
          */
-      /*  this.bindListItemView = function (viewid, itemview, item) {
+      /*   this.bindListItemView = function (viewid, itemview, item) {
             // TODO: implement how attributes of item shall be displayed in itemview
             itemview.root.getElementsByTagName("img")[0].src = item.src;
             itemview.root.getElementsByTagName("h2")[0].textContent =
@@ -106,6 +117,7 @@ define(["mwf", "entities"], function(mwf, entities) {
             item.added;
         }
         */
+
 
         /*
          * for views with listviews: react to the selection of a listitem
@@ -123,6 +135,7 @@ define(["mwf", "entities"], function(mwf, entities) {
          */
         this.onListItemMenuItemSelected = function(option, listitem, listview) {
             // TODO: implement how selection of option for listitem shall be handled
+            proto.onListItemMenuItemSelected.call(this, option, listitem, listview);
         }
 
         /*
