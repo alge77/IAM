@@ -27,7 +27,7 @@
 <body data-mwf-application="MyApplication">
 
 <!-- TODO-REPEATED: add new views here -->
-<div class="mwf-view mwf-view-initial" id="mediaOverview" data-mwf-viewcontroller="ListviewViewController">
+<div class="mwf-view mwf-view-initial" data-mwf-viewcontroller="ListviewViewController" id="mediaOverview">
   <div data-mwf-templatename="mediaItemMenu" class="mwf-listitem-menu mwf-template mwf-databind mwf-dialog mwf-popup">
     <header>
       <h2 class="mwf-dyncontent">{{name}}{{_id}}</h2>
@@ -41,13 +41,13 @@
   </div>
   <div class="mwf-dialog mwf-popup mwf-template mwf-databind mwf-view-component" data-mwf-viewcontroller="GenericDialogTemplateViewController" data-mwf-templatename="mediaItemDialog">
     <div class=“mwf-dialog-body“>
-      <h2>Neues Medium</h2>
+      <h2>{{#if item.created}}Medium editieren{{else}}Neues Medium{{/if}}</h2>
       <form id="tagNameInputForm" on-submit="submitForm">
         <input name="name" autocomplete="off" class="mwf-autofocus" type="text" placeholder="Name" required="required" value="{{item.name}}"/>
         <div class=“mwf-buttonbar“>
-          <button class="mwf-left-align mwf-button" type="button" onclick="deleteItem">Löschen</button>
-          <input class="mwf-button-prio mwf-right-align mwf-button" type="submit" value="Hinzufügen"/>
-</div>
+          <button class="mwf-left-align mwf-button" disabled="{{#unless item.created}}disabled{{/unless}}" type="button" onclick="deleteItem">Löschen</button>
+          <input class="mwf-button-prio mwf-right-align mwf-button" type="submit" value="{{#if item.created}}Ändern{{else}}Hinzufügen{{/if}}"/>
+        </div>
       </form>
 </div>
 </div>
@@ -64,8 +64,7 @@
         <h2>{{name}}{{_id}}</h2>
         <h3>{{addedDateString}}</h3>
       </div>
-      <div class="mwf-imgbutton mwf-img-options-vertical mwf-right-align mwf-listitem-menu-control">
-      </div>
+      <div class="mwf-imgbutton mwf-img-options-vertical mwf-right-align mwf-listitem-menu-control"></div>
     </li>
   </ul>
   </div>

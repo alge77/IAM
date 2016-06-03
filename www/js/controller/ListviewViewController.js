@@ -9,9 +9,9 @@ define(["mwf", "entities"], function(mwf, entities) {
         // declare a variable for accessing the prototype object (used für super() calls)
         var proto = ListviewViewController.prototype;
 
-        var items = [];
+        // var items = [];
 
-        var addNewMediaItemElement;
+        // var addNewMediaItemElement;
 
         var resetDatabaseElement;
         /*
@@ -20,22 +20,21 @@ define(["mwf", "entities"], function(mwf, entities) {
         this.oncreate = function (callback) {
             // TODO: do databinding, set listeners, initialise the view
 
-            addNewMediaItemElement = this.root.querySelector("#addNewMediaItem");
-            addNewMediaItemElement.onclick = function() {
-
-            this.createNewItem();
-            }.bind(this);
-
-            entities.MediaItem.readAll(function(items) {
-              this.initialiseListview(items);
-            }.bind(this));
-
             resetDatabaseElement = this.root.querySelector("#resetDatabase");
             resetDatabaseElement.onclick = function() {
               if (confirm("Soll die Datenbank wirklich zurückgesetzt werden?")) {
                 indexedDB.deleteDatabase("mwftutdb");
               }
             }.bind(this);
+
+            addNewMediaItemElement = this.root.querySelector("#addNewMediaItem");
+            addNewMediaItemElement.onclick = function() {
+              this.createNewItem();
+            }.bind(this);
+
+            entities.MediaItem.readAll(function(items) {
+                this.initialiseListview(items);
+            }.bind(this));
 
             // call the superclass once creation is done
             proto.oncreate.call(this,callback);
@@ -53,13 +52,13 @@ define(["mwf", "entities"], function(mwf, entities) {
         /* HIER STECKT DER FEHLER!!!!! DER OBERE CODE FÜGT EIN ELEMENT HINZU, MIT DIALOG NICHT MEHR MÖGLICH
         AUSSERDEM WIRD EINE URL NACH DEM MUSTER http://localhost:3000/?name=*der name den ich in das Dialogfeld eingegeben habe* AUFGERUFEN */
         this.createNewItem = function() {
-          var newItem = new entities.MediaItem("", "https://placeholdit.imgix.net/~text?txtsize=100&txt=NEW&w=200&h=200");
-          this.showDialog("mediaItemDialog",{
+          var newItem = new entities.MediaItem("", "http://placeholdit.imgix.net/~text?txtsize=100&txt=NEW&w=200&h=200");
+          this.showDialog("mediaItemDialog", {
             item: newItem,
             actionBindings: {
             submitForm: function(event) {
               event.original.preventDefault();
-              newItem.create(function(){
+              newItem.create(function() {
                 this.addToListview(newItem);
                 }.bind(this));
                 this.hideDialog();
@@ -108,7 +107,7 @@ define(["mwf", "entities"], function(mwf, entities) {
          * for views with listviews: bind a list item to an item view
          * TODO: delete if no listview is used or if databinding uses ractive templates
          */
-      /*   this.bindListItemView = function (viewid, itemview, item) {
+         /*this.bindListItemView = function (viewid, itemview, item) {
             // TODO: implement how attributes of item shall be displayed in itemview
             itemview.root.getElementsByTagName("img")[0].src = item.src;
             itemview.root.getElementsByTagName("h2")[0].textContent =
@@ -135,7 +134,7 @@ define(["mwf", "entities"], function(mwf, entities) {
          */
         this.onListItemMenuItemSelected = function(option, listitem, listview) {
             // TODO: implement how selection of option for listitem shall be handled
-            proto.onListItemMenuItemSelected.call(this, option, listitem, listview);
+        proto.onListItemMenuItemSelected.call(this, option, listitem, listview);
         }
 
         /*
