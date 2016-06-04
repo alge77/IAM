@@ -32,6 +32,18 @@ define(["mwf", "entities"], function(mwf, entities) {
               this.createNewItem();
             }.bind(this);
 
+            this.addListener(new mwf.EventMatcher("crud","deleted","MediaItem"),function(event) {
+                  this.removeFromListview(event.data);
+              }.bind(this));
+
+            this.addListener(new mwf.EventMatcher("crud","created","MediaItem"),function(event) {
+                  this.updateInListview(event.data);
+                }.bind(this));
+
+            this.addListener(new mwf.EventMatcher("crud","updated","MediaItem"),function(event) {
+                  this.removeFromListview(event.data._id, event.data);
+                }.bind(this));
+
             entities.MediaItem.readAll(function(items) {
                 this.initialiseListview(items);
             }.bind(this));
@@ -49,8 +61,6 @@ define(["mwf", "entities"], function(mwf, entities) {
       }
         */
 
-        /* HIER STECKT DER FEHLER!!!!! DER OBERE CODE FÜGT EIN ELEMENT HINZU, MIT DIALOG NICHT MEHR MÖGLICH
-        AUSSERDEM WIRD EINE URL NACH DEM MUSTER http://localhost:3000/?name=*der name den ich in das Dialogfeld eingegeben habe* AUFGERUFEN */
         this.createNewItem = function() {
           var newItem = new entities.MediaItem("", "http://placeholdit.imgix.net/~text?txtsize=100&txt=NEW&w=200&h=200");
           this.showDialog("mediaItemDialog", {
@@ -59,7 +69,7 @@ define(["mwf", "entities"], function(mwf, entities) {
             submitForm: function(event) {
               event.original.preventDefault();
               newItem.create(function() {
-                this.addToListview(newItem);
+                // this.addToListview(newItem);
                 }.bind(this));
                 this.hideDialog();
               }.bind(this)
@@ -74,7 +84,7 @@ define(["mwf", "entities"], function(mwf, entities) {
         }.bind(this));
         */
         item.delete(function(){
-          this.removeFromListview(item._id);
+          // this.removeFromListview(item._id);
           }.bind(this));
         }
 
@@ -91,7 +101,7 @@ define(["mwf", "entities"], function(mwf, entities) {
               submitForm: function(event) {
                 event.original.preventDefault();
                 item.update(function(){
-                  this.updateInListview(item._id, item);
+                // this.updateInListview(item._id, item);
                 }.bind(this));
                 this.hideDialog();
               }.bind(this), /*!!!*/
@@ -103,6 +113,12 @@ define(["mwf", "entities"], function(mwf, entities) {
           });
         }
 
+        this.onReturnFromSubview = function(subviewid,returnValue,returnStatus,callback) {
+            if (subviewid == "mediaReadview" && returnValue && returnValue.deletedItem) {
+              this.removeFromListview(returnValue.deletedItem. id);
+              }
+            callback();
+            }
         /*
          * for views with listviews: bind a list item to an item view
          * TODO: delete if no listview is used or if databinding uses ractive templates
@@ -122,10 +138,12 @@ define(["mwf", "entities"], function(mwf, entities) {
          * for views with listviews: react to the selection of a listitem
          * TODO: delete if no listview is used or if item selection is specified by targetview/targetaction
          */
-        this.onListItemSelected = function(listitem,listview) {
+        /* this.onListItemSelected = function(listitem,listview) {
             // TODO: implement how selection of listitem shall be handled
-            alert("Element "  + listitem.name + listitem._id + " wurde ausgewählt!");
+            // alert("Element "  + listitem.name + listitem._id + " wurde ausgewählt!");
+            this.nextView("mediaReadview",{item: listitem});
         }
+        */
 
 
         /*
