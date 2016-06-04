@@ -27,49 +27,157 @@
 <body data-mwf-application="MyApplication">
 
 <!-- TODO-REPEATED: add new views here -->
-<div class="mwf-view mwf-view-initial" data-mwf-viewcontroller="ListviewViewController" id="mediaOverview">
-  <div data-mwf-templatename="mediaItemMenu" class="mwf-listitem-menu mwf-template mwf-databind mwf-dialog mwf-popup">
-    <header>
-      <h2 class="mwf-dyncontent">{{name}}{{_id}}</h2>
-    </header>
-    <div class=“mwf-dialog-body“>
-      <ul>
-        <li class="mwf-li-singletitle mwf-menu-item" data-mwf-targetaction="deleteItem">Löschen</li>
-        <li class="mwf-li-singletitle mwf-menu-item" data-mwf-targetaction="editItem">Editieren</li>
-      </ul>
-    </div>
-  </div>
-  <div class="mwf-dialog mwf-popup mwf-template mwf-databind mwf-view-component" data-mwf-viewcontroller="GenericDialogTemplateViewController" data-mwf-templatename="mediaItemDialog">
-    <div class=“mwf-dialog-body“>
-      <h2>{{#if item.created}}Medium editieren{{else}}Neues Medium{{/if}}</h2>
-      <form id="tagNameInputForm" on-submit="submitForm">
-        <input name="name" autocomplete="off" class="mwf-autofocus" type="text" placeholder="Name" required="required" value="{{item.name}}"/>
-        <div class=“mwf-buttonbar“>
-          <button class="mwf-left-align mwf-button" disabled="{{#unless item.created}}disabled{{/unless}}" type="button" onclick="deleteItem">Löschen</button>
-          <input class="mwf-button-prio mwf-right-align mwf-button" type="submit" value="{{#if item.created}}Ändern{{else}}Hinzufügen{{/if}}"/>
-        </div>
-      </form>
-</div>
-</div>
+<!-- mediaOverview -->
+<div class="mwf-view mwf-view-initial" id="mediaOverview" data-mwf-viewcontroller="ListviewViewController">
   <header>
     <div class="mwf-imgbutton mwf-img-sandwich mwf-left-align" id="resetDatabase"></div>
     <h2 class="mwf-left-align">Medien</h2>
-    <div class="mwf-imgbutton mwf-img-plus mwf-right-align" id="addNewMediaItem"></div>
+    <div class="mwf-imgbutton mwf-img-plus mwf-right-align" id="addNewMediaItem" data-mwf-targetview="mediaEditview"></div>
   </header>
   <div class="mwf-body mwf-scrollview">
-  <ul class="mwf-listview" data-mwf-listitem-view="myapp-listitem" data-mwf-listitem-menu="mediaItemMenu">
-    <li class="mwf-listitem mwf-li-title-subtitle mwf-template mwf-databind" data-mwf-templatename="myapp-listitem">
-      <img class="mwf-left-align" src="{{src}}"/>
-      <div class="mwf-li-titleblock">
-        <h2>{{name}}{{_id}}</h2>
-        <h3>{{addedDateString}}</h3>
-      </div>
-      <div class="mwf-imgbutton mwf-img-options-vertical mwf-right-align mwf-listitem-menu-control"></div>
-    </li>
-  </ul>
+    <ul class="mwf-listview" data-mwf-listitem-view="myapp-listitem" data-mwf-listitem-menu="mediaItemMenu">
+      <li class="mwf-listitem mwf-li-title-subtitle mwf-template mwf-databind" data-mwf-templatename="myapp-listitem" data-mwf-targetview="mediaReadview" >
+      <!-- <li class="mwf-listitem mwf-li-title-subtitle mwf-template mwf-databind" data-mwf-templatename="myapp-listitem" data-mwf-targetview="mediaEditview" > -->
+        <!-- <img src="http://lorempixel.com/200/200" alt="" class="mwf-left-align"> -->
+        <img src="{{src}}" alt="" class="mwf-left-align">
+        <div class="mwf-li-titleblock">
+          <h2>{{name}}{{_id}}</h2>
+          <h3>{{addedDateString}}</h3>
+        </div>
+        <div class="mwf-imgbutton mwf-img-options-vertical mwf-right-align mwf-listitem-menu-control" ></div>
+        <!-- <div class="mwf-imgbutton mwf-img-options-vertical mwf-right-align " data-mwf-targetview="mediaEditview"></div> -->
+
+      </li>
+    </ul>
   </div>
-<footer></footer>
+  <footer>
+    <div class="mwf-imgbutton mwf-img-refresh mwf-right-align" id="switchCrud"></div>
+  </footer>
 </div>
 
+<!-- mediaItemMenu -->
+<!-- TODO: -->
+<div data-mwf-templatename="mediaItemMenu" class="mwf-listitem-menu mwf-template mwf-databind mwf-dialog mwf-popup">
+<!-- <div data-mwf-templatename="mediaItemMenu" class="mwf-listitem-menu mwf-template mwf-databind mwf-dialog mwf-popup mwf-styling mwf-shown"> -->
+  <header>
+    <h2 class="mwf-dyncontent">{{name}}{{_id}}</h2>
+  </header>
+  <div class="mwf-dialog-body">
+    <ul>
+      <li class="mwf-li-singletitle mwf-menu-item" data-mwf-targetaction="deleteItem">Loeschen</li>
+      <li class="mwf-li-singletitle mwf-menu-item" data-mwf-targetaction="editItem">Editieren</li>
+      <!-- <li class="mwf-li-singletitle mwf-menu-item" data-mwf-targetaction="mediaEditview">Editieren</li> -->
+    </ul>
+  </div>
+</div>
+
+
+<!-- mediaItemDialog -->
+<!-- TODO: -->
+<!-- div.mwf-dialog-body>h2{Neues Medium}+form[id="tagNameInputForm"]>input[name="name" autocomplete="off" type="text" placeholder="Name" required="required"].mwf-autofocus+div.mwf-buttonbar>button.mwf-left-align.mwf-button[type="button"]{Loeschen}+input.mwf-right-align.mwf-button.mwf-button-prio[type="submit" value="Hinzufuegen"] -->
+<!-- <div data-mwf-templatename="mediaItemDialog" data-mwf-viewcontroller="GenericDialogTemplateViewController" class="mwf-template mwf-databind mwf-dialog mwf-popup mwf-styling mwf-shown mwf-view-component"> -->
+<div class="mwf-template mwf-databind mwf-dialog mwf-popup mwf-view-component" data-mwf-viewcontroller="GenericDialogTemplateViewController" data-mwf-templatename="mediaItemDialog">
+  <div class="mwf-dialog-body">
+    <h2>{{#if item.created}}Medium editieren{{else}}Neues Medium{{/if}}</h2>
+    <form id="tagNameInputForm" on-submit="submitForm">
+      <input type="text" name="name" autocomplete="off" placeholder="Name" required="required" class="mwf-autofocus" value="{{item.name}}"/>
+      <div class="mwf-buttonbar">
+        <button class="mwf-left-align mwf-button" disabled="{{#unless item.created}}disabled{{/unless}}"type="button" on-click="deleteItem">Loeschen</button>
+        <input id="createTagAction" type="submit" class="mwf-right-align mwf-button mwf-button-prio" value="{{#if item.created}} Aendern {{else}}Hinzufuegen{{/if}}">
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- mediaDeleteItemDialog -->
+<!-- TODO: -->
+<!-- <div data-mwf-templatename="mediaDeleteItemDialog" data-mwf-viewcontroller="GenericDialogTemplateViewController" class="mwf-template mwf-databind mwf-dialog mwf-popup mwf-styling mwf-shown mwf-view-component"> -->
+<div class="mwf-template mwf-databind mwf-dialog mwf-popup mwf-view-component" data-mwf-viewcontroller="GenericDialogTemplateViewController" data-mwf-templatename="mediaDeleteItemDialog">
+  <div class="mwf-dialog-body">
+    <h2>MEDIUM LOESCHEN</h2>
+    <form id="tagNameInputForm" on-submit="submitForm">
+      <!-- <input type="text" name="name" autocomplete="off" placeholder="Name" required="required" class="mwf-autofocus" value="{{item.name}}"/> -->
+      <p style="color:black; padding-left: 10px;"> Moechten Sie das Medium {{item.name}} loeschen?</p>
+      <div class="mwf-buttonbar">
+        <!-- <button class="mwf-left-align mwf-button" disabled="{{#unless item.created}}disabled{{/unless}}"type="button" on-click="deleteItem">Loeschen</button> -->
+        <button class="mwf-left-align mwf-button" type="button" on-click="cancelDialog">Abbrechen</button>
+        <input id="createTagAction" type="submit" class="mwf-right-align mwf-button mwf-button-prio" value="Loeschen">
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ReadviewViewController -->
+<!-- TODO: -->
+<div class="mwf-view" id="mediaReadview" data-mwf-viewcontroller="ReadviewViewController">
+  <div class="mwf-template mwf-databind" data-mwf-templatename="mediaReadviewTemplate">
+    <header>
+      <div class="mwf-imgbutton mwf-img-sandwich mwf-left-align"></div>
+      <h2>{{item.name}}</h2>
+      <div class="mwf-imgbutton mwf-img-pencil mwf-right-align" on-click="editItem"></div>
+      <div class="mwf-imgbutton mwf-img-delete mwf-right-align" on-click="deleteItem"></div>
+    </header>
+    <div class="mwf-body mwf-scrollview">
+      <img src="{{item.src}}" style="max-height:70vh;" alt="">
+      <p style="color:white; padding-left: 10px;"> {{item.description}}</p>
+    </div>
+    <footer>
+      <div class="mwf-back mwf-imgbutton mwf-img-backward"></div>
+    </footer>
+  </div>
+</div>
+
+<!-- EditviewViewController -->
+<!-- TODO: -->
+<!-- <div class="mwf-view mwf-shown mwf-styling" id="mediaEditview" data-mwf-viewcontroller="EditviewViewController"> -->
+<div class="mwf-view" id="mediaEditview" data-mwf-viewcontroller="EditviewViewController">
+  <div class="mwf-template mwf-databind" data-mwf-templatename="mediaEditviewTemplate">
+    <header>
+      <div class="mwf-imgbutton mwf-img-sandwich mwf-left-align"></div>
+      <h2>{{#if item.created}}Editieren: {{item.name}}{{else}}Neues Medium{{/if}}</h2>
+
+      <!-- http://www.stefan-muenz.de/html5/interaktion/felder-ausserhalb-von-formularen/ -->
+
+      <input class="mwf-imgbutton mwf-img-disk mwf-right-align" type="submit" form="formular">
+      <!-- <form>
+      </form> -->
+
+      <button class="mwf-imgbutton mwf-img-delete mwf-right-align" on-click="deleteItem" disabled="{{#unless item.created}}disabled{{/unless}}"></button>
+    </header>
+    <div class="mwf-body mwf-scrollview">
+      <!-- <form id="formular" action="njsimpl/http2mdb" on-submit="submitForm" enctype="multipart/form-data"> -->
+      <!-- <form id="formular" action="http2mdb" method="post" enctype="multipart/form-data" target="multipart_target" on-submit="submitForm"> -->
+      <form id="formular"  enctype="multipart/form-data" on-submit="submitForm" target="iframe">
+      <!-- <form id="formular" method="post" enctype="multipart/form-data"  on-submit="submitForm"> -->
+        <fieldset>
+          <legend style="padding-bottom:20px;"> Bild auswaehlen</legend>
+          <label for="url">
+            <input type="radio" id="url" name="radioselectinput" value="url" > URL
+          </label>
+          <label for="upload">
+            <input type="radio" id="upload" name="radioselectinput" value="upload" > UPLOAD
+          </label>
+          <input id="inputelement" style="padding-top:20px;" type="url" name="src" value="{{item.src}}" placeholder="..." required>
+          <!-- <input id="inputelement" style="padding-top:20px;" type="file" name="src" required> -->
+
+        </fieldset>
+        <img id="img" src="{{item.src}}" style="width:200px; padding: 10px;" alt="">
+        <fieldset>
+          <legend> Titel</legend>
+          <input type="text" name="name" value="{{item.name}}" required placeholder="...">
+        </fieldset>
+        <fieldset>
+          <legend> Beschreibung</legend>
+          <textarea name="description" rows="8" cols="40" value="{{item.description}}">{{item.description}}</textarea>
+        </fieldset>
+      </form>
+    </div>
+    <footer>
+      <div class="mwf-back mwf-imgbutton mwf-img-backward"></div>
+    </footer>
+  </div>
+</div>
+<!-- <iframe src="" name="iframe" frameborder="0">dsds</iframe> -->
 </body>
 </html>
