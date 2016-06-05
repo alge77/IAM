@@ -1,4 +1,4 @@
 # IAM
-Fehlermeldung:
+Tutorial ist beendet.
 
-<img src="https://abload.de/img/desctopscreenshotd5uxx.png">
+Weiter mit Aufgabe NJM_1 (Seite 27)
