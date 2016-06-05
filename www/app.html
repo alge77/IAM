@@ -64,11 +64,7 @@
   </header>
   <div class="mwf-dialog-body">
     <ul>
-<<<<<<< HEAD
       <li class="mwf-li-singletitle mwf-menu-item" data-mwf-targetaction="deleteItem">Löschen</li>
-=======
-      <li class="mwf-li-singletitle mwf-menu-item" data-mwf-targetaction="deleteItem">Loeschen</li>
->>>>>>> 8ca315ea82821a8582642185a3f3cd95ce32f121
       <li class="mwf-li-singletitle mwf-menu-item" data-mwf-targetaction="editItem">Editieren</li>
       <!-- <li class="mwf-li-singletitle mwf-menu-item" data-mwf-targetaction="mediaEditview">Editieren</li> -->
     </ul>
@@ -78,11 +74,7 @@
 
 <!-- mediaItemDialog -->
 <!-- TODO: -->
-<<<<<<< HEAD
 <!-- div.mwf-dialog-body>h2{Neues Medium}+form[id="tagNameInputForm"]>input[name="name" autocomplete="off" type="text" placeholder="Name" required="required"].mwf-autofocus+div.mwf-buttonbar>button.mwf-left-align.mwf-button[type="button"]{Löschen}+input.mwf-right-align.mwf-button.mwf-button-prio[type="submit" value="Hinzufuegen"] -->
-=======
-<!-- div.mwf-dialog-body>h2{Neues Medium}+form[id="tagNameInputForm"]>input[name="name" autocomplete="off" type="text" placeholder="Name" required="required"].mwf-autofocus+div.mwf-buttonbar>button.mwf-left-align.mwf-button[type="button"]{Loeschen}+input.mwf-right-align.mwf-button.mwf-button-prio[type="submit" value="Hinzufuegen"] -->
->>>>>>> 8ca315ea82821a8582642185a3f3cd95ce32f121
 <!-- <div data-mwf-templatename="mediaItemDialog" data-mwf-viewcontroller="GenericDialogTemplateViewController" class="mwf-template mwf-databind mwf-dialog mwf-popup mwf-styling mwf-shown mwf-view-component"> -->
 <div class="mwf-template mwf-databind mwf-dialog mwf-popup mwf-view-component" data-mwf-viewcontroller="GenericDialogTemplateViewController" data-mwf-templatename="mediaItemDialog">
   <div class="mwf-dialog-body">
@@ -90,13 +82,8 @@
     <form id="tagNameInputForm" on-submit="submitForm">
       <input type="text" name="name" autocomplete="off" placeholder="Name" required="required" class="mwf-autofocus" value="{{item.name}}"/>
       <div class="mwf-buttonbar">
-<<<<<<< HEAD
         <button class="mwf-left-align mwf-button" disabled="{{#unless item.created}}disabled{{/unless}}"type="button" on-click="deleteItem">Löschen</button>
         <input id="createTagAction" type="submit" class="mwf-right-align mwf-button mwf-button-prio" value="{{#if item.created}} Ändern {{else}}Hinzufügen{{/if}}">
-=======
-        <button class="mwf-left-align mwf-button" disabled="{{#unless item.created}}disabled{{/unless}}"type="button" on-click="deleteItem">Loeschen</button>
-        <input id="createTagAction" type="submit" class="mwf-right-align mwf-button mwf-button-prio" value="{{#if item.created}} Aendern {{else}}Hinzufuegen{{/if}}">
->>>>>>> 8ca315ea82821a8582642185a3f3cd95ce32f121
       </div>
     </form>
   </div>
@@ -108,7 +95,6 @@
 <!-- <div data-mwf-templatename="mediaDeleteItemDialog" data-mwf-viewcontroller="GenericDialogTemplateViewController" class="mwf-template mwf-databind mwf-dialog mwf-popup mwf-styling mwf-shown mwf-view-component"> -->
 <div class="mwf-template mwf-databind mwf-dialog mwf-popup mwf-view-component" data-mwf-viewcontroller="GenericDialogTemplateViewController" data-mwf-templatename="mediaDeleteItemDialog">
   <div class="mwf-dialog-body">
-<<<<<<< HEAD
     <h2>MEDIUM LÖSCHEN</h2>
     <form id="tagNameInputForm" on-submit="submitForm">
       <!-- <input type="text" name="name" autocomplete="off" placeholder="Name" required="required" class="mwf-autofocus" value="{{item.name}}"/> -->
@@ -117,16 +103,6 @@
         <!-- <button class="mwf-left-align mwf-button" disabled="{{#unless item.created}}disabled{{/unless}}"type="button" on-click="deleteItem">Löschen</button> -->
         <button class="mwf-left-align mwf-button" type="button" on-click="cancelDialog">Abbrechen</button>
         <input id="createTagAction" type="submit" class="mwf-right-align mwf-button mwf-button-prio" value="Löschen">
-=======
-    <h2>MEDIUM LOESCHEN</h2>
-    <form id="tagNameInputForm" on-submit="submitForm">
-      <!-- <input type="text" name="name" autocomplete="off" placeholder="Name" required="required" class="mwf-autofocus" value="{{item.name}}"/> -->
-      <p style="color:black; padding-left: 10px;"> Moechten Sie das Medium {{item.name}} loeschen?</p>
-      <div class="mwf-buttonbar">
-        <!-- <button class="mwf-left-align mwf-button" disabled="{{#unless item.created}}disabled{{/unless}}"type="button" on-click="deleteItem">Loeschen</button> -->
-        <button class="mwf-left-align mwf-button" type="button" on-click="cancelDialog">Abbrechen</button>
-        <input id="createTagAction" type="submit" class="mwf-right-align mwf-button mwf-button-prio" value="Loeschen">
->>>>>>> 8ca315ea82821a8582642185a3f3cd95ce32f121
       </div>
     </form>
   </div>
@@ -175,11 +151,7 @@
       <form id="formular"  enctype="multipart/form-data" on-submit="submitForm" target="iframe">
       <!-- <form id="formular" method="post" enctype="multipart/form-data"  on-submit="submitForm"> -->
         <fieldset>
-<<<<<<< HEAD
           <legend style="padding-bottom:20px;"> Bild auswählen</legend>
-=======
-          <legend style="padding-bottom:20px;"> Bild auswaehlen</legend>
->>>>>>> 8ca315ea82821a8582642185a3f3cd95ce32f121
           <label for="url">
             <input type="radio" id="url" name="radioselectinput" value="url" > URL
           </label>
