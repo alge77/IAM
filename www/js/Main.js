@@ -31,14 +31,15 @@ requirejs.config({
             /* application libraries: view controllers */
             MyInitialViewController: 'js/controller/MyInitialViewController',
             ListviewViewController: 'js/controller/ListviewViewController',
-            ReadviewViewController: 'js/controller/ReadviewViewController'
+            ReadviewViewController: 'js/controller/ReadviewViewController',
+            MediaEditviewViewController: 'js/controller/MediaEditviewViewController'
         }
     }
 );
 
 // here, we load all modules that will be required at runtime, those that will be instantiated dynamically by the mwf core framework need to be declared explicitly here - this is necessary for all ViewController components
 // TODO-REPEATED: add new ViewControllers to the dependency array
-requirejs(["mwf","GenericDialogTemplateViewController","MyApplication", "MyInitialViewController", "ListviewViewController", "ReadviewViewController"],
+requirejs(["mwf","GenericDialogTemplateViewController","MyApplication", "MyInitialViewController", "ListviewViewController", "ReadviewViewController", "MediaEditviewViewController"],
     function (mwf) {
         mwf.onloadApplication();
         //entitiesTest.test();

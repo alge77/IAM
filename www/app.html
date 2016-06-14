@@ -66,7 +66,6 @@
     <ul>
       <li class="mwf-li-singletitle mwf-menu-item" data-mwf-targetaction="deleteItem">Löschen</li>
       <li class="mwf-li-singletitle mwf-menu-item" data-mwf-targetaction="editItem">Editieren</li>
-      <!-- <li class="mwf-li-singletitle mwf-menu-item" data-mwf-targetaction="mediaEditview">Editieren</li> -->
     </ul>
   </div>
 </div>
@@ -115,8 +114,8 @@
     <header>
       <div class="mwf-imgbutton mwf-img-sandwich mwf-left-align"></div>
       <h2>{{item.name}}</h2>
-      <div class="mwf-imgbutton mwf-img-pencil mwf-right-align" on-click="editItem"></div>
-      <div class="mwf-imgbutton mwf-img-delete mwf-right-align" on-click="deleteItem"></div>
+      <div class="mwf-imgbutton mwf-img-pencil mwf-right-align" data-mwf-targetaction="mediaEditview" on-click="editItem"></div>
+      <div class="mwf-imgbutton mwf-img-delete mwf-right-align"  on-click="deleteItem"></div>
     </header>
     <div class="mwf-body mwf-scrollview">
       <img src="{{item.src}}" style="max-height:70vh;" alt="">
@@ -131,15 +130,13 @@
 <!-- EditviewViewController -->
 <!-- TODO: -->
 <!-- <div class="mwf-view mwf-shown mwf-styling" id="mediaEditview" data-mwf-viewcontroller="EditviewViewController"> -->
-<div class="mwf-view" id="mediaEditview" data-mwf-viewcontroller="EditviewViewController">
+<div class="mwf-view" id="mediaEditview" data-mwf-viewcontroller="MediaEditviewViewController">
   <div class="mwf-template mwf-databind" data-mwf-templatename="mediaEditviewTemplate">
     <header>
       <div class="mwf-imgbutton mwf-img-sandwich mwf-left-align"></div>
-      <h2>{{#if item.created}}Editieren: {{item.name}}{{else}}Neues Medium{{/if}}</h2>
+      <h2>{{#if item.created}} Editieren: {{item.name}}{{else}} Neues Medium {{/if}}</h2>
 
-      <!-- http://www.stefan-muenz.de/html5/interaktion/felder-ausserhalb-von-formularen/ -->
-
-      <input class="mwf-imgbutton mwf-img-disk mwf-right-align" type="submit" form="formular">
+      <input class="mwf-imgbutton mwf-img-disk mwf-right-align" type="submit" form="mediaEditForm">
       <!-- <form>
       </form> -->
 
@@ -148,21 +145,19 @@
     <div class="mwf-body mwf-scrollview">
       <!-- <form id="formular" action="njsimpl/http2mdb" on-submit="submitForm" enctype="multipart/form-data"> -->
       <!-- <form id="formular" action="http2mdb" method="post" enctype="multipart/form-data" target="multipart_target" on-submit="submitForm"> -->
-      <form id="formular"  enctype="multipart/form-data" on-submit="submitForm" target="iframe">
+      <form id="mediaEditForm"  enctype="multipart/form-data" on-submit="submitForm">
       <!-- <form id="formular" method="post" enctype="multipart/form-data"  on-submit="submitForm"> -->
         <fieldset>
-          <legend style="padding-bottom:20px;"> Bild auswählen</legend>
+          <legend>Bild auswählen</legend>
           <label for="url">
             <input type="radio" id="url" name="radioselectinput" value="url" > URL
           </label>
           <label for="upload">
             <input type="radio" id="upload" name="radioselectinput" value="upload" > UPLOAD
           </label>
-          <input id="inputelement" style="padding-top:20px;" type="url" name="src" value="{{item.src}}" placeholder="..." required>
-          <!-- <input id="inputelement" style="padding-top:20px;" type="file" name="src" required> -->
-
+          <input id="inputelement" type="url" name="src" value="{{item.src}}" placeholder="..." required>
         </fieldset>
-        <img id="img" src="{{item.src}}" style="width:200px; padding: 10px;" alt="">
+        <img id="img" src="{{item.src}}" alt="hier könnte ihre Werbung stehen">
         <fieldset>
           <legend> Titel</legend>
           <input type="text" name="name" value="{{item.name}}" required placeholder="...">
@@ -178,6 +173,31 @@
     </footer>
   </div>
 </div>
+<!--<div class="mwf-view mwf-styling" id="mediaEditView">
+  <header>
+    <div class="mwf-imgbutton mwf-left-align mwf-img-sandwich"></div>
+    <h2 class="mwf-left-align">Titel</h2>
+    <input type="submit" class="mwf-imgbutton mwf-right-align mwf-img-disk" form="mediaEditForm"></input>
+    <div class="mwf-imgbutton mwf-right-align mwf-img-delete"></div>
+  </header>
+  <div class="mwf-body">
+    <form id="mediaEditForm">
+      <fieldset>
+        <legend>Titel</legend>
+        <input type="text" required="required" name="name" placeholder="Name">
+      </fieldset>
+      <fieldset>
+      <legend>Bild auswählen</legend>
+        <input type="url" required="required" name="src" placeholder="URL des Bildes">
+      </fieldset>
+      <img id="img" src="{{item.src}}" alt="hier könnte ihre Werbung stehen">
+      <fieldset>
+        <legend>Beschreibung</legend>
+        <textarea placeholder="..."></textarea>
+      </fieldset>
+    </form>
+  </div>
+</div>-->
 <!-- <iframe src="" name="iframe" frameborder="0">dsds</iframe> -->
 </body>
 </html>
