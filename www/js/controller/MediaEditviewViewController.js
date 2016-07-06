@@ -9,23 +9,73 @@ define(["mwf","entities"], function(mwf, entities) {
         // declare a variable for accessing the prototype object (used für super() calls)
         var proto = MediaEditviewViewController.prototype;
 
+        var mediaItem;
+
         /*/
          * for any view: initialise the view
          */
 
 
         this.oncreate = function (callback) {
-             // TODO: do databinding, set listeners, initialise the view
+            // TODO: do databinding, set listeners, initialise the view
+            if (this.args) {
+                mediaItem = this.args.item;
+            }
+            else {
+                mediaItem = new entities.MediaItem();
+            }
 
-             var mediaItem = this.args.item;
             // alert("oncreate(): got item: " + JSON.stringify(mediaItem));
 
-            this.bindElement("mediaEditviewTemplate",{item: mediaItem},this.root);
+            this.bindElement("mediaEditviewTemplate", {item: mediaItem}, this.root);
 
-             var form = document.forms["mediaEditform"];
+            var form = document.forms["mediaEditform"];
 
-             form.onsubmit = function() {
+             form.onsubmit = (function() {
                  // alert("submit: " + JSON.stringify(mediaItem));
+                 if (mediaItem.contentProvision == "URL") {
+                     this.createOrUpdateMediaItem();
+                 }
+                 else if (mediaItem.contentProvision == "Upload") {
+                     this.submitFormDataToServerAndCreateMediaItem(form);
+                 }
+                 else {
+                     alert("Content Provision must be set and selected!");
+                 }
+                 return false;
+             }).bind(this);
+
+            // call the superclass once creation is done
+            proto.oncreate.call(this,callback);
+        }
+
+            this.submitFormDataToServerAndCreateMediaItem = function(form) {
+
+                var formdata = new FormData();
+                formdata.append("srccontent",form.srccontent.files[0]);
+                formdata.append("name",mediaItem.name);
+                formdata.append("description",mediaItem.description);
+
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200) {
+                            // alert("got response " + xhr.responseText);
+                            var responseJson = JSON.parse(xhr.responseText);
+                            mediaItem.src = responseJson.data.srccontent;
+                            this.createOrUpdateMediaItem();
+                        }
+                        else {
+                            alert("got status different from 200 " + xhr.status);
+                        }
+                    }
+                }.bind(this);
+                xhr.open("POST","http2mdb/upload");
+                xhr.send(formdata);
+
+        }
+
+             this.createOrUpdateMediaItem = function() {
                  if (mediaItem.created) {
                      mediaItem.update(
                          function() {
@@ -43,17 +93,14 @@ define(["mwf","entities"], function(mwf, entities) {
                  return false;
              }.bind(this);
 
-
-            var deleteItemButton = this.root.querySelector(".mwf-img-delete");
-            deleteItemButton.onclick = function() {
-                this.args.item.delete(function() {
-                    this.previousView({deleted: mediaItem});
-                }.bind(this))
-            }.bind(this);
-
-             // call the superclass once creation is done
-             proto.oncreate.call(this,callback);
-         }
+        // das funktioniert leider nicht mehr :(
+        
+        /*var deleteItemButton = this.root.querySelector(".mwf-img-delete");
+        deleteItemButton.onclick = function() {
+            this.args.item.delete(function() {
+                this.previousView({deleted: mediaItem});
+            }.bind(this))
+        }.bind(this);*/
 
         /*
          * for views with listviews: bind a list item to an item view

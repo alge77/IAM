@@ -141,15 +141,16 @@
     </header>
     <div class="mwf-body mwf-scrollview">
      <form id="mediaEditform"  enctype="multipart/form-data">
+       <fieldset class="mwf-radiogroup">
+         <input type="radio" value="URL" name="{{item.contentProvision}}" id="contentProvisionURL" checked="checked"/>
+         <label for="contentProvisionURL">URL</label>
+         <input type="radio" value="Upload" name="{{item.contentProvision}}" id="contentProvisionUpload" />
+         <label for="contentProvisionUpload">Upload</label>
+       </fieldset>
         <fieldset>
           <legend>Bild auswählen</legend>
-          <label for="url">
-            <input type="radio" id="url" name="radioselectinput" value="url" > URL
-          </label>
-          <label for="upload">
-            <input type="radio" id="upload" name="radioselectinput" value="upload" > UPLOAD
-          </label>
-          <input id="inputelement" type="url" name="src" value="{{item.src}}" placeholder="..." required>
+          <input type="url" required="{{item.contentProvision == 'URL'}}" hidden="{{item.contentProvision != 'URL'}}" disabled="{{item.contentProvision != 'URL'}}" name="src" placeholder="URL des Bildes" value="{{item.src}}" />
+          <input type="file" required="{{item.contentProvision == 'Upload'}}" hidden="{{item.contentProvision != 'Upload'}}" disabled="{{item.contentProvision != 'Upload'}}" name="srccontent" hidden="hidden" />
         </fieldset>
         <img id="img" src="{{item.src}}" alt="Bild?">
         <fieldset>

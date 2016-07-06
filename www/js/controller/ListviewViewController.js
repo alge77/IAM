@@ -130,7 +130,7 @@ define(["mwf","entities"], function(mwf, entities) {
                         this.hideDialog();
                     }.bind(this),
                     cancelDialog: function(event) {
-                       // this.deleteItem(item);
+                        // this.deleteItem(item);
                         this.hideDialog();
                     }.bind(this)
                 }
