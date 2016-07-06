@@ -33,11 +33,15 @@ define(["mwf","entities"], function(mwf, entities) {
             }.bind(this);
 
             addNewMediaItemElement = this.root.querySelector("#addNewMediaItem");
+
             addNewMediaItem.onclick = function() {
                 // crudops.create(new entities.MediaItem("m", "http://lorimpixel.com/50/50"),function(created){
                 //   this.addToListview(created);
                 // }.bind(this));
-                this.createNewItem();
+                // this.createNewItem();
+                var newMediaItem = new entities.MediaItem();
+
+                this.nextView("mediaEditview",{item: newMediaItem});
             }.bind(this);
             // addNewMediaItem.onclick = function() {
             //   this.addToListview(new entities.MediaItem("m_new", "http://lorimpixel.com/50/50"));
@@ -56,7 +60,7 @@ define(["mwf","entities"], function(mwf, entities) {
             this.addListener(new mwf.EventMatcher("crud","deleted","MediaItem"), function(event) {
                 this.removeFromListview(event.data);
             }.bind(this));
-            // S. 40 Verwendung EntityManager
+
             entities.MediaItem.readAll(function(items){
                 this.initialiseListview(items);
             }.bind(this));
@@ -65,10 +69,9 @@ define(["mwf","entities"], function(mwf, entities) {
             switchCrudElement = this.root.querySelector("#switchCrud");
             switchCrudElement.onclick = function() {
                 // bestaetigung ob wirklich die datenbank geswitched werden soll
-                 if(confirm("Soll die Datenbank wirklich geswitched werden ?")) {
+                 if(confirm("Switch Database?")) {
                  }
                 console.log("SWITCHCRUD: "+ this.application.currentCRUDScope);
-                // mwf.switchCRUD("remote");
                 if (this.application.currentCRUDScope == "local") {
                     this.application.switchCRUD("remote");
                 } else if (this.application.currentCRUDScope == "remote") {
@@ -77,7 +80,7 @@ define(["mwf","entities"], function(mwf, entities) {
                 console.log("SWITCHCRUD: "+ this.application.currentCRUDScope);
 
                 entities.MediaItem.readAll(function(items){
-                    console.log("initialisiere die Listview neu");
+                    // console.log("initialisiere die Listview neu");
                     this.initialiseListview(items);
                 }.bind(this));
 
@@ -87,32 +90,7 @@ define(["mwf","entities"], function(mwf, entities) {
             proto.oncreate.call(this,callback);
         }
 
-        /*
-         * for views with listviews: bind a list item to an item view
-         * TODO: delete if no listview is used or if databinding uses ractive templates
-         */
-        // this.bindListItemView = function (viewid, itemview, item) {
-        //     // TODO: implement how attributes of item shall be displayed in itemview
-        //     itemview.root.getElementsByTagName("img")[0].src = item.src;
-        //     itemview.root.getElementsByTagName("h2")[0].textContent = item.name+item._id;
-        //     itemview.root.getElementsByTagName("h3")[0].textContent = item.added;
-        // }
 
-        /*
-         * for views with listviews: react to the selection of a listitem
-         * TODO: delete if no listview is used or if item selection is specified by targetview/targetaction
-         */
-        // this.onListItemSelected = function(listitem,listview) {
-        //     // TODO: implement how selection of listitem shall be handled
-        //     console.log(listitem.name);
-        //     // alert("Element " + listitem.name + listitem._id + " wurde ausgewählt!");
-        //     this.nextView("mediaReadview", item: listitem);
-        // }
-
-        /*
-         * for views with listviews: react to the selection of a listitem menu option
-         * TODO: delete if no listview is used or if item selection is specified by targetview/targetaction
-         */
         this.onListItemMenuItemSelected = function(option, listitem, listview) {
             // TODO: implement how selection of option for listitem shall be handled
             // notice: this = calling ViewController
@@ -152,7 +130,7 @@ define(["mwf","entities"], function(mwf, entities) {
                         this.hideDialog();
                     }.bind(this),
                     cancelDialog: function(event) {
-                        // this.deleteItem(item);
+                       // this.deleteItem(item);
                         this.hideDialog();
                     }.bind(this)
                 }
@@ -168,43 +146,46 @@ define(["mwf","entities"], function(mwf, entities) {
          */
         this.editItem = function(item) {
 
+
             this.showDialog("mediaItemDialog", {
                item: item,
                actionBindings: {
                  submitForm: function(event) {
                    event.original.preventDefault();
-                   item.update(function(){
-                     // this.updateInListview(item._id, item);
+                   item.update(function(){this.updateInListview(item._id, item);
                    }.bind(this));
                    this.hideDialog();
                  }.bind(this),
                  deleteItem: function(event) {
-                   this.deleteItem(item);
+                     item.delete(item._id,function(){
+                     this.removeFromListview(item._id);
+                      }.bind(this));
                    this.hideDialog();
                  }.bind(this)
                }
              });
-            this.nextView("mediaEditview", {item: item});
+            // this.nextView("mediaEditview",{item: item});
         }
 
-        /*
-         * for createNewItem
-         * TODO:
-         */
-        this.createNewItem = function() {
-            var newItem = new entities.MediaItem("", "http://placeholdit.imgix.net/~text?txtsize=200&txt=NEW&w=300&h=300", "", "description")
-            this.showDialog("mediaItemDialog", {
-                item: newItem,
-                actionBindings: {
-                    submitForm: function(event) {
-                        event.original.preventDefault();
-                        newItem.create(function(){
-                            // this.addToListview(newItem);
-                        }.bind(this));
-                        this.hideDialog();
-                    }.bind(this)
+
+
+        this.onReturnFromSubview = function (subviewid,returnValue,returnStatus,callback) {
+            if (subviewid == "mediaReadview") {
+                if (returnValue && returnValue.deleted) {
+                    this.removeFromListview(returnValue.deleted._id);
                 }
-            });
+            }
+            else if (subviewid == "mediaEditview") {
+                if (returnValue) {
+                    if (returnValue.created) {
+                       // this.addToListview(returnValue.created); <-- wenn nicht auskommentiert erscheinet ein neues Objekt doppelt im Listview, ist aber nur einmal in der DB und nach Reload auch nur 1x sichtbar.
+                    }
+                    else if (returnValue.updated) {
+                        this.updateInListview(returnValue.updated._id, returnValue.updated);
+                    }
+                }
+            }
+            callback();
         }
 
     }

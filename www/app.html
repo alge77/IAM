@@ -29,6 +29,7 @@
 <!-- TODO-REPEATED: add new views here -->
 <!-- mediaOverview -->
 <div class="mwf-view mwf-view-initial" id="mediaOverview" data-mwf-viewcontroller="ListviewViewController">
+  <!-- <div class="mwf-view" id="mediaOverview" data-mwf-viewcontroller="ListviewViewController"> -->
   <header>
     <div class="mwf-imgbutton mwf-img-sandwich mwf-left-align" id="resetDatabase"></div>
     <h2 class="mwf-left-align">Medien</h2>
@@ -41,7 +42,7 @@
         <!-- <img src="http://lorempixel.com/200/200" alt="" class="mwf-left-align"> -->
         <img src="{{src}}" alt="" class="mwf-left-align">
         <div class="mwf-li-titleblock">
-          <h2>{{name}}{{_id}}</h2>
+          <h2>{{name}}<!-- {{_id}} --></h2>
           <h3>{{addedDateString}}</h3>
         </div>
         <div class="mwf-imgbutton mwf-img-options-vertical mwf-right-align mwf-listitem-menu-control" ></div>
@@ -60,7 +61,7 @@
 <div data-mwf-templatename="mediaItemMenu" class="mwf-listitem-menu mwf-template mwf-databind mwf-dialog mwf-popup">
 <!-- <div data-mwf-templatename="mediaItemMenu" class="mwf-listitem-menu mwf-template mwf-databind mwf-dialog mwf-popup mwf-styling mwf-shown"> -->
   <header>
-    <h2 class="mwf-dyncontent">{{name}}{{_id}}</h2>
+    <h2 class="mwf-dyncontent">{{name}}</h2>
   </header>
   <div class="mwf-dialog-body">
     <ul>
@@ -114,11 +115,11 @@
     <header>
       <div class="mwf-imgbutton mwf-img-sandwich mwf-left-align"></div>
       <h2>{{item.name}}</h2>
-      <div class="mwf-imgbutton mwf-img-pencil mwf-right-align" data-mwf-targetaction="mediaEditview" on-click="editItem"></div>
-      <div class="mwf-imgbutton mwf-img-delete mwf-right-align"  on-click="deleteItem"></div>
+      <div class="mwf-imgbutton mwf-img-pencil mwf-right-align" on-click="editItem" ></div>
+      <div class="mwf-imgbutton mwf-img-delete mwf-right-align" on-click="deleteItem"></div>
     </header>
     <div class="mwf-body mwf-scrollview">
-      <img src="{{item.src}}" style="max-height:70vh;" alt="">
+      <img src="{{item.src}}" alt="Bild?">
       <p style="color:white; padding-left: 10px;"> {{item.description}}</p>
     </div>
     <footer>
@@ -128,25 +129,18 @@
 </div>
 
 <!-- EditviewViewController -->
-<!-- TODO: -->
-<!-- <div class="mwf-view mwf-shown mwf-styling" id="mediaEditview" data-mwf-viewcontroller="EditviewViewController"> -->
+
 <div class="mwf-view" id="mediaEditview" data-mwf-viewcontroller="MediaEditviewViewController">
   <div class="mwf-template mwf-databind" data-mwf-templatename="mediaEditviewTemplate">
     <header>
       <div class="mwf-imgbutton mwf-img-sandwich mwf-left-align"></div>
-      <h2>{{#if item.created}} Editieren: {{item.name}}{{else}} Neues Medium {{/if}}</h2>
-
-      <input class="mwf-imgbutton mwf-img-disk mwf-right-align" type="submit" form="mediaEditForm">
-      <!-- <form>
-      </form> -->
-
-      <button class="mwf-imgbutton mwf-img-delete mwf-right-align" on-click="deleteItem" disabled="{{#unless item.created}}disabled{{/unless}}"></button>
+     <h2>{{#if item.created}} Editieren: {{item.name}}{{else}} Neues Medium {{/if}}</h2>
+      <input type="submit" class="mwf-imgbutton mwf-right-align mwf-img-disk" form="mediaEditform" />
+      {{#if item.created}}<input type="button" enabled class="mwf-imgbutton mwf-img-delete mwf-right-align" on-click="deleteItem"/>
+      {{else}}<input type="button" disabled class="mwf-imgbutton mwf-img-delete mwf-right-align" on-click="deleteItem"/>{{/if}}
     </header>
     <div class="mwf-body mwf-scrollview">
-      <!-- <form id="formular" action="njsimpl/http2mdb" on-submit="submitForm" enctype="multipart/form-data"> -->
-      <!-- <form id="formular" action="http2mdb" method="post" enctype="multipart/form-data" target="multipart_target" on-submit="submitForm"> -->
-      <form id="mediaEditForm"  enctype="multipart/form-data" on-submit="submitForm">
-      <!-- <form id="formular" method="post" enctype="multipart/form-data"  on-submit="submitForm"> -->
+     <form id="mediaEditform"  enctype="multipart/form-data">
         <fieldset>
           <legend>Bild auswählen</legend>
           <label for="url">
@@ -157,7 +151,7 @@
           </label>
           <input id="inputelement" type="url" name="src" value="{{item.src}}" placeholder="..." required>
         </fieldset>
-        <img id="img" src="{{item.src}}" alt="hier könnte ihre Werbung stehen">
+        <img id="img" src="{{item.src}}" alt="Bild?">
         <fieldset>
           <legend> Titel</legend>
           <input type="text" name="name" value="{{item.name}}" required placeholder="...">
@@ -169,35 +163,10 @@
       </form>
     </div>
     <footer>
-      <div class="mwf-back mwf-imgbutton mwf-img-backward"></div>
+      <div class="mwf-back mwf-left-align mwf-imgbutton mwf-img-backward"></div>
     </footer>
   </div>
 </div>
-<!--<div class="mwf-view mwf-styling" id="mediaEditView">
-  <header>
-    <div class="mwf-imgbutton mwf-left-align mwf-img-sandwich"></div>
-    <h2 class="mwf-left-align">Titel</h2>
-    <input type="submit" class="mwf-imgbutton mwf-right-align mwf-img-disk" form="mediaEditForm"></input>
-    <div class="mwf-imgbutton mwf-right-align mwf-img-delete"></div>
-  </header>
-  <div class="mwf-body">
-    <form id="mediaEditForm">
-      <fieldset>
-        <legend>Titel</legend>
-        <input type="text" required="required" name="name" placeholder="Name">
-      </fieldset>
-      <fieldset>
-      <legend>Bild auswählen</legend>
-        <input type="url" required="required" name="src" placeholder="URL des Bildes">
-      </fieldset>
-      <img id="img" src="{{item.src}}" alt="hier könnte ihre Werbung stehen">
-      <fieldset>
-        <legend>Beschreibung</legend>
-        <textarea placeholder="..."></textarea>
-      </fieldset>
-    </form>
-  </div>
-</div>-->
-<!-- <iframe src="" name="iframe" frameborder="0">dsds</iframe> -->
+
 </body>
 </html>

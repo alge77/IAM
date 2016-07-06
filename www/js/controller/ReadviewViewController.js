@@ -9,20 +9,32 @@ define(["mwf","entities"], function(mwf, entities) {
         // declare a variable for accessing the prototype object (used für super() calls)
         var proto = ReadviewViewController.prototype;
 
-        var viewProxy;
+        var deleteItemButton;
+
+        var editItemButton;
         /*
          * for any view: initialise the view
          */
         this.oncreate = function (callback) {
             // TODO: do databinding, set listeners, initialise the view
-            var mediaItem = this.args.item; //new entities.MediaItem("m","http://lorempixel.com/300/");
-            viewProxy = this.bindElement("mediaReadviewTemplate",{item: mediaItem},this.root).viewProxy;
-            viewProxy.bindAction("deleteItem",function(){
-              mediaItem.delete(function() {
-                this.notifyListeners(new mwf.Event("crud","deleted","MediaItem",mediaItem. id));
-            this.previousView();
-            }.bind(this))
-          }.bind(this));
+
+            var mediaItem = this.args.item;
+
+            viewProxy = this.bindElement("mediaReadviewTemplate", {item: mediaItem}, this.root).viewProxy;
+
+            deleteItemButton = this.root.querySelector(".mwf-img-delete");
+            deleteItemButton.onclick = function() {
+                this.args.item.delete(function() {
+                    this.previousView({deleted: this.args.item});
+                }.bind(this))
+          }.bind(this);
+
+
+            editItemButton = this.root.querySelector(".mwf-img-pencil");
+            editItemButton.onclick = function() {
+                    this.nextView("mediaEditview",{item: this.args.item});
+            }.bind(this);
+            
             // call the superclass once creation is done
             proto.oncreate.call(this,callback);
         }
@@ -62,6 +74,24 @@ define(["mwf","entities"], function(mwf, entities) {
             // TODO: implement action bindings for dialog, accessing dialog.root
         }
 
+        this.onReturnFromSubview = function (subviewid, returnValue, returnStatus, callback) {
+            if(subviewid == "mediaEditview"){
+                if(returnValue){
+                    if(returnValue.updated){
+                        // alert("Calling update");
+                        var mediaItem = returnValue.updated;
+                        viewProxy.update({item: mediaItem});
+                    }
+                    else if(returnValue.deleted) {
+                        var mediaItem = returnValue.deleted;
+                        mediaItem.delete(function() {
+                            this.previousView({deleted: mediaItem});
+                        }.bind(this))
+                    }
+                }
+            }
+            callback();
+        }
 
     }
 
